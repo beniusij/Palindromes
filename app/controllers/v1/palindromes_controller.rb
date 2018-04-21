@@ -1,10 +1,24 @@
 module V1
+
   class PalindromesController < ApplicationController
+    @@palindromes = []
+
+
     def index
-      puts "test"
+      render json: @@palindromes.last(10)
     end
 
-    def evaluate
+    def create
+      phrase = params[:phrase]
+      clean = phrase.gsub(/[^A-Za-z.]/, '').downcase
+      if clean == clean.reverse
+        @@palindromes.push(phrase)
+        render json: true
+      else
+        render json: false
+      end
     end
+
   end
+
 end
