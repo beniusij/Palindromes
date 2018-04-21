@@ -1,7 +1,6 @@
-# README
+# Palindromes API v1.0
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This projeect provides a simple 
 
 Things you may want to cover:
 
