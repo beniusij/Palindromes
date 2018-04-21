@@ -10,12 +10,12 @@ module V1
 
     def create
       phrase = params[:phrase]
-      clean = phrase.gsub(/[^A-Za-z.]/, '').downcase
+      clean = phrase.gsub(/[^A-Za-z]/, '').downcase
       if clean == clean.reverse
         @@palindromes[Time.now] = phrase
-        render json: true
+        render json: {result: true}
       else
-        render json: false
+        render json: {result: false}
       end
     end
 
