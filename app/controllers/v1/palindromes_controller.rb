@@ -1,22 +1,34 @@
 module V1
 
   class PalindromesController < ApplicationController
-    @@palindromes = []
+    @@palindromes = {}
 
 
     def index
-      render json: @@palindromes.last(10)
+      render json: latest_palindromes
     end
 
     def create
       phrase = params[:phrase]
       clean = phrase.gsub(/[^A-Za-z.]/, '').downcase
       if clean == clean.reverse
-        @@palindromes.push(phrase)
+        @@palindromes[Time.now] = phrase
         render json: true
       else
         render json: false
       end
+    end
+
+    private
+
+    def latest_palindromes
+      p = []
+      @@palindromes.each do |k, v|
+        if k > (Time.now - 10.minutes)
+          p.push(v)
+        end
+      end
+      return p.last(10)
     end
 
   end
