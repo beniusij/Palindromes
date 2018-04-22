@@ -5,10 +5,12 @@ module V1
 
 
     def index
-      render json: latest_palindromes
+      cleanup
+      render json: @@palindromes.values.last(10)
     end
 
-    def create
+    def create ()
+      cleanup
       phrase = params[:phrase]
       clean = phrase.gsub(/[^A-Za-z]/, '').downcase
       if clean == clean.reverse
@@ -21,14 +23,13 @@ module V1
 
     private
 
-    def latest_palindromes
-      p = []
+    # Disposes hash pairs that are older than 10 minutes
+    def cleanup
       @@palindromes.each do |k, v|
-        if k > (Time.now - 10.minutes)
-          p.push(v)
+        if k < (Time.now - 10.minutes)
+          @@palindromes.delete(k)
         end
       end
-      return p.last(10)
     end
 
   end
